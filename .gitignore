@@ -40,3 +40,9 @@ ehthumbs.db
 # --- Crashlytics & Reports ---
 sysinfo.txt
 crashlytics-build.properties
+
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+*_BurstDebugInformation_DoNotShip/
+
+/[Aa]ssets/.[Uu]tmp/
+.[Uu]tmp/
