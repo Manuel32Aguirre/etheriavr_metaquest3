@@ -46,3 +46,13 @@ crashlytics-build.properties
 
 /[Aa]ssets/.[Uu]tmp/
 .[Uu]tmp/
+
+.env
+.env.meta
+
+/[Bb]uild/
+/[Bb]uilds/
+# Archivos de depuración de Android
+**.symbols.zip
+
+.metadata/
