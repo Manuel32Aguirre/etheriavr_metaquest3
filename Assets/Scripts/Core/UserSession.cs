@@ -4,15 +4,15 @@ public class UserSession : MonoBehaviour
 {
     public static UserSession Instance { get; private set; }
 
-    [Header("User Data (mock / real)")]
+    [Header("User Data")]
     public int id;
     public string username;
     public string email;
-    public string tessitura; // "Tenor", "Soprano", etc.
+    public string tessitura;
+    public string token;
 
     private void Awake()
     {
-        // Singleton
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -23,12 +23,14 @@ public class UserSession : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void SetUser(int id, string username, string email, string tessitura)
+    // Actualizado para incluir el Token
+    public void SetUser(int id, string username, string email, string tessitura, string token)
     {
         this.id = id;
         this.username = username;
         this.email = email;
         this.tessitura = tessitura;
+        this.token = token;
     }
 
     public void Clear()
@@ -37,5 +39,6 @@ public class UserSession : MonoBehaviour
         username = "";
         email = "";
         tessitura = "";
+        token = "";
     }
 }
