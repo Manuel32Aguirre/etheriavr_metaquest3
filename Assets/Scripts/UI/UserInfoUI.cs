@@ -14,9 +14,6 @@ public class UserInfoUI : MonoBehaviour
         }
 
         userText.text =
-            $"ID: {UserSession.Instance.id}\n" +
-            $"User: {UserSession.Instance.username}\n" +
-            $"Email: {UserSession.Instance.email}\n" +
-            $"Tessitura: {UserSession.Instance.tessitura}";
+            $"Usuario: {UserSession.Instance.username}";
     }
 }
