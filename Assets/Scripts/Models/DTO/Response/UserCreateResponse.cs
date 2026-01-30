@@ -1,6 +1,6 @@
 using System;
 [Serializable]
-public class UserResponse
+public class UserCreateResponse
 {
     public int id;
     public string username;

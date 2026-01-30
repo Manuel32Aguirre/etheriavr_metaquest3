@@ -2,43 +2,48 @@ using UnityEngine;
 
 public class UserSession : MonoBehaviour
 {
-    public static UserSession Instance { get; private set; }
+    public static UserSession Instance;
 
-    [Header("User Data")]
-    public int id;
+    [Header("Datos del Usuario")]
+    public string token;
+    public int userId;
     public string username;
     public string email;
     public string tessitura;
-    public string token;
+
+    [Header("Estado")]
+    public bool IsLoggedIn = false;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
-            return;
         }
+    }
+    public void SetSession(UserLoginResponse data)
+    {
+        token = data.access_token;
+        userId = data.id;
+        username = data.username;
+        email = data.email;
+        tessitura = data.tessitura;
+        IsLoggedIn = true;
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        Debug.Log($"<color=green>[UserSession] Sesión iniciada para: {username}</color>");
     }
 
-    // Actualizado para incluir el Token
-    public void SetUser(int id, string username, string email, string tessitura, string token)
+    public void Logout()
     {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.tessitura = tessitura;
-        this.token = token;
-    }
-
-    public void Clear()
-    {
-        id = 0;
-        username = "";
-        email = "";
-        tessitura = "";
-        token = "";
+        token = null;
+        userId = 0;
+        username = null;
+        IsLoggedIn = false;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScene");
     }
 }

@@ -1,4 +1,6 @@
-[System.Serializable]
+using System;
+
+[Serializable]
 public class UserLoginResponse
 {
     public string access_token;
@@ -6,5 +8,5 @@ public class UserLoginResponse
     public int id;
     public string username;
     public string email;
-    public string tessitura; // Puede venir como null
+    public string tessitura;
 }

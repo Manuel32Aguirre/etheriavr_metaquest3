@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Networking; // Obligatorio para leer en Android
+using UnityEngine.Networking;
 
 public static class EnvLoader
 {
     public static Dictionary<string, string> Load()
     {
         var envData = new Dictionary<string, string>();
-        
+
         // Esta ruta funciona tanto en PC (Editor) como en el visor Quest
         string path = Path.Combine(Application.streamingAssetsPath, ".env");
         string content = "";
@@ -28,7 +28,7 @@ public static class EnvLoader
             }
             else
             {
-                Debug.LogError($"❌ Error cargando .env en Quest: {request.error}");
+                Debug.LogError($"Error cargando .env en Quest: {request.error}");
                 return envData;
             }
         }
@@ -41,7 +41,7 @@ public static class EnvLoader
             }
             else
             {
-                Debug.LogWarning("⚠️ No se encontró el .env en Assets/StreamingAssets/");
+                Debug.LogWarning("No se encontró el .env en Assets/StreamingAssets/");
             }
         }
 

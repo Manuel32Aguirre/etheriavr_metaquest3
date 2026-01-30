@@ -3,8 +3,6 @@ using UnityEngine;
 public class NetworkConfig : ScriptableObject
 {
     private static NetworkConfig _instance;
-
-    // Acceso global con inicialización inteligente (Lazy Loading)
     public static NetworkConfig Instance
     {
         get
@@ -13,23 +11,29 @@ public class NetworkConfig : ScriptableObject
             {
                 _instance = CreateInstance<NetworkConfig>();
                 _instance.LoadFromEnv();
-                Debug.Log("[NetworkConfig] 🛠️ Configuración inicializada dinámicamente.");
+                Debug.Log("<color=cyan>[NetworkConfig]</color> Configuración inicializada dinámicamente.");
             }
             return _instance;
         }
     }
 
-    [Header("Valores dinámicos (se cargan del .env)")]
-    public string ipAddress = "127.0.0.1";
-    public string port = "8000";
+    [Header("Conexión al Servidor")]
+    public string ipAddress = "";
+    public string port = "";
     public bool useHttps = false;
 
-    [Header("Endpoints")]
-    public string registerPath = "/api/users";
-    public string loginPath = "/api/login";
-
-    // Propiedad calculada para la URL base
-    public string BaseUrl => $"{(useHttps ? "https" : "http")}://{ipAddress}:{port}";
+    public string BaseUrl
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(ipAddress) || string.IsNullOrEmpty(port))
+            {
+                Debug.LogWarning("<color=orange>[NetworkConfig] Atenciòn: La dirección IP o el Puerto están vacíos.</color>");
+                return "";
+            }
+            return $"{(useHttps ? "https" : "http")}://{ipAddress}:{port}";
+        }
+    }
 
     public void LoadFromEnv()
     {
@@ -42,16 +46,16 @@ public class NetworkConfig : ScriptableObject
                 if (env.ContainsKey("SERVER_PORT")) port = env["SERVER_PORT"];
                 if (env.ContainsKey("USE_HTTPS")) useHttps = bool.Parse(env["USE_HTTPS"]);
 
-                Debug.Log($"🌐 Red configurada: {BaseUrl}");
+                Debug.Log($"<color=green>[NetworkConfig] Configuración cargada con éxito: {BaseUrl}</color>");
             }
             else
             {
-                Debug.LogWarning("⚠️ No se pudo cargar .env o está vacío. Usando valores por defecto.");
+                Debug.LogError("<color=red>[NetworkConfig] CRÍTICO: No se pudo cargar el archivo .env o está vacío.</color>");
             }
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"❌ Error al cargar configuración desde .env: {e.Message}");
+            Debug.LogError($"<color=red>[NetworkConfig] Error al procesar el .env: {e.Message}</color>");
         }
     }
 }

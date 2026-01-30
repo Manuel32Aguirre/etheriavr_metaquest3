@@ -56,3 +56,9 @@ crashlytics-build.properties
 **.symbols.zip
 
 .metadata/
+
+# --- Unity Recovery & Temp Assets ---
+/[Aa]ssets/_Recovery/
+/[Aa]ssets/_Recovery.meta
+/[Aa]ssets/[Aa]utoplay/
+/[Aa]ssets/[Aa]utoplay.meta
