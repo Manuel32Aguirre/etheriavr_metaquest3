@@ -1,33 +1,67 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SongItem : MonoBehaviour
 {
-    [Header("Los 3 Renglones de la UI")]
-    public TMP_Text txtTituloArtista;   // Renglón 1: Título - Artista
-    public TMP_Text txtTonalidadTempo;  // Renglón 2: Tonalidad | Tempo
-    public TMP_Text txtDetalles;        // Renglón 3: Género | Duración | Modo
+    [Header("UI de Información")]
+    public TMP_Text txtTituloArtista;
+    public TMP_Text txtTonalidadTempo;
+    public TMP_Text txtDetalles;
+
+    [Header("Botón de Acción")]
+    [SerializeField] private Button btnJugar;
+
+    private SongListarResponse _myFullData;
 
     public void Setup(SongListarResponse data)
     {
+        _myFullData = data;
+
         // 1. Título - Artista
         if (txtTituloArtista != null)
             txtTituloArtista.text = $"{data.title} - {data.artist_name}";
 
-        // 2. Tonalidad: C#m | Tempo: 54 BPM
+        // 2. Tonalidad y Tempo
         if (txtTonalidadTempo != null)
             txtTonalidadTempo.text = $"Tonalidad: {data.musical_key} | Tempo: {data.tempo} BPM";
 
-        // 3. Género: Clásico | Duración: 3.5 min | Modo: Piano
+        // 3. Detalles: Género, Duración y Modo
         if (txtDetalles != null)
         {
-            // Convertimos segundos a minutos con 1 decimal
             // La fórmula es: $minutos = \frac{segundos}{60}$
             float duracionMinutos = data.duration / 60f; 
             
             txtDetalles.text = $"Género: {data.musical_genre} | " +
                                $"Duración: {duracionMinutos:F1} min | " +
                                $"Modo: {data.mode}";
+        }
+
+        // Configuración del botón específico
+        if (btnJugar != null)
+        {
+            btnJugar.onClick.RemoveAllListeners();
+            btnJugar.onClick.AddListener(CargarCancionEnJuego);
+        }
+        else
+        {
+            Debug.LogWarning($"<color=yellow>[Aviso]</color> No se asignó el botón btnJugar en el prefab de {data.title}");
+        }
+    }
+
+    private void CargarCancionEnJuego()
+    {
+        // Guardamos TODO el objeto en el Manager persistente
+        if (SelectedSongManager.Instance != null)
+        {
+            SelectedSongManager.Instance.selectedSong = _myFullData;
+            Debug.Log($"<color=cyan>[Escena]</color> Cambiando a PianoGame con: {_myFullData.title}");
+            SceneManager.LoadScene("PianoGame");
+        }
+        else
+        {
+            Debug.LogError("No se encontró el SelectedSongManager en la escena.");
         }
     }
 }

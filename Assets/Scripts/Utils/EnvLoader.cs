@@ -15,7 +15,6 @@ public static class EnvLoader
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            // En Android/Quest los archivos están comprimidos, hay que "pedirlos" como una web
             var request = UnityWebRequest.Get(path);
             var operation = request.SendWebRequest();
 
@@ -34,7 +33,6 @@ public static class EnvLoader
         }
         else
         {
-            // En PC (Editor) lo leemos normal
             if (File.Exists(path))
             {
                 content = File.ReadAllText(path);
